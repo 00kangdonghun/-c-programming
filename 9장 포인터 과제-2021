@@ -1,0 +1,276 @@
+1-1.
+#pragma warning (disable: 4996)
+#include<stdio.h>
+int MAX(int ar[]);
+int MIN(int ar[]);
+int main() {
+	int N, ar[100], *p;
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		for (p = ar; p < ar + 100; p++) {
+			scanf("%d", p);
+			if (*p == 0) {
+				break;
+			}
+		}
+		printf("%d %d\n", MAX(ar), MIN(ar));
+	}
+
+	return 0;
+}
+int MAX(int ar[]) {
+	int *p, big = *ar;
+	for (p = ar; p < ar + 100; p++) {
+		if (*p == 0) {
+			break;
+		}
+		if (big <= *p) {
+			big = *p;
+		}
+	}
+	return big;
+}
+int MIN(int ar[]) {
+	int *p, small = *ar;
+	for (p = ar; p < ar + 100; p++) {
+		if (*p == 0) {
+			break;
+		}
+		if (small >= *p) {
+			small = *p;
+		}
+	}
+	return small;
+}
+
+1-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+int *MAX(int ar[]);
+int *MIN(int ar[]); 
+int main() {
+	int ar[100], N = 0, *p, *max, *min, *tmp, cnt = 0;
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		for (p = ar; p < ar + 100; p++) {
+			scanf("%d", p);
+			if (*p == 0) {
+				break;
+			}
+		}
+		max = MAX(ar);
+		min = MIN(ar);
+		if (max > min) {
+			tmp = max;
+			max = min;
+			min = tmp;
+		}
+		cnt = 0;
+		for (tmp = max + 1; tmp < min; tmp++) {
+			printf("%d ", *tmp);
+			cnt++;
+		}
+		if (cnt==0) {
+			printf("none");
+		}
+		printf("\n");
+	}
+	return 0;
+}
+int *MAX(int ar[]) {
+	int *max = ar;
+	while (*ar) {
+		if (*ar > *max)
+			max = ar;
+		ar++;
+	}
+	return max;
+}
+int *MIN(int ar[]) {
+	int *min = ar;
+	while (*ar) {
+		if (*ar < *min)
+			min = ar;
+		ar++;
+	}
+	return min;
+}
+
+2-1.
+#pragma warning (disable: 4996)
+#include<stdio.h>
+int main() {
+	int arr[6], *p, *q;
+	int cnt = 0, c = 0, a = 0;
+	for (p = arr; p < arr + 6; p++) {
+		scanf("%d", p);
+	}
+	for (p = arr; p < arr + 6; p++) {
+		cnt = 0;
+		for (q = arr; q < p; q++) {
+			if (*p == *q) {
+				a++;
+			}
+		}
+		if (a >= 1) {
+			continue;
+		}
+		else {
+			for (q = arr; q < arr + 6; q++) {
+				if (*p == *q) {
+					cnt++;
+				}
+			}
+			if (cnt >= 2) {
+				printf("%d %d\n", *p, cnt);
+				c++;
+			}
+		}
+	}
+	if (c == 0) {
+		printf("0");
+	}
+
+	return 0;
+}
+
+2-2.
+#pragma warning (disable: 4996)
+#include<stdio.h>
+int correct(int *arr);
+int newnum(int *arr);
+int main() {
+	int arr[6], *p;
+	for (p = arr; p < arr + 6; p++) {
+		scanf("%d", p);
+	}
+	printf("%d\n", correct(arr));
+	for (p = arr; p < arr + 6; p++) {
+		printf("%d ", *p);
+	}
+	
+	return 0; 
+} 
+int correct(int *arr) {
+	int *p, *q, cnt = 0;
+	for (p = arr; p < arr + 6; p++) {
+		for (q = p + 1; q < arr + 6; q++) {
+			if (*p == *q) {
+				*p = newnum(arr);
+				cnt++;
+				break;
+			}
+		}
+	}
+	if (cnt > 0) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+int newnum(int *arr) {
+	int a, i;
+	for (i = 1; i <= 45; i++) {
+		if (i != *arr&&i != *(arr + 1) && i != *(arr + 2) && i != *(arr + 3) && i != *(arr + 4) && i != *(arr + 5)) {
+			a = i;
+			break;
+		}
+	}
+	return a;
+}
+
+3.
+#pragma warning (disable: 4996) 
+#include<stdio.h> 
+int main() {
+	int N, tmp = 0, sum = 0, n = 0;
+	char ch[100], c[100], *p, *q = c;
+	scanf("%d", &N);
+	getchar();
+	for (p = ch; p < ch + N; p++) {
+		scanf("%c", p);
+	}
+	p = ch;
+	while (p < ch + N) {
+		if ('A' <= *p&&*p <= 'Z' || 'a' <= *p&&*p <= 'z') {
+			*q = *p;
+			q++;
+			n++;
+		}
+		else if ('0' <= *p&&*p <= '9') {
+			while ('0' <= *p&&*p <= '9') {
+				tmp = tmp * 10 + (*p - '0');
+				p++;
+			}
+			sum += tmp;
+			tmp = 0;
+			p--;
+		}
+		p++;
+	}
+	for (p = c; p < c + n; p++) {
+		printf("%c", *p);
+	}
+	printf("\n");
+	printf("%d", sum);
+
+	return 0;
+}
+
+4.
+#pragma warning (disable: 4996)
+#include<stdio.h>
+int main() {
+	int a[11], b[11], n = 0, m = 0, *p, *q, tmp; 
+	for (p = a; p < a + 11; p++) { 
+		scanf("%d", p); 
+		if (*p == 0) {
+			break; 
+		}
+		n++; 
+	}
+	for (q = b; q < b + 11; q++) { 
+		scanf("%d", q); 
+		if (*q == 0) { 
+			break; 
+		}
+		m++; 
+	}
+	for (p = a; p < a + n; p++) { 
+		for (q = b; q < b + m; q++) { 
+			if (*p < *q) { 
+				tmp = *p;
+				*p = *q;
+				*q = tmp; 
+			}
+		}
+	}
+	for (p = a; p < a + n; p++) {
+		for (q = a; q < a + n; q++) {
+			if (*p > *q) {
+				tmp = *p;
+				*p = *q;
+				*q = tmp;
+			}
+		}
+	}
+	for (p = a; p < a + n; p++) { 
+		printf("%d ", *p); 
+	}
+	printf("\n"); 
+	for (p = b; p < b + m; p++) {
+		for (q = b; q < b + m; q++) { 
+			if (*p < *q) { 
+				tmp = *p;
+				*p = *q;
+				*q = tmp; 
+			} 
+		}
+	}
+	for (p = b; p < b + m; p++) { 
+		printf("%d ", *p); 
+	}
+
+	return 0; 
+}
