@@ -1,0 +1,478 @@
+1-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int input(int* p);
+int* sel_next(int* p, int N, int M);
+int number(int* p, int* q);
+int main() {
+	int N = 0, M = 0, size = 0, num = 0;
+	int x[100] = { 0 };
+	int* end = NULL;
+	size = input(x);
+	scanf("%d", &M);
+	end = sel_next(x, size, M);
+	num = number(x + M, end);
+	printf("%d", num);
+
+	return 0;
+}
+int input(int* p) {
+	int* q = p;
+	int cnt = 0;
+	scanf("%d", q);
+	while (*q != -1){
+		q++;
+		cnt++;
+		scanf("%d", q);
+	}
+
+	return cnt;
+}
+int* sel_next(int* p, int N, int M) {
+	for (int* q = p + M; q < p + N; q++){
+		if (*q > * (q + 1))
+			return q;
+	}
+}
+int number(int* p, int* q) {
+	int num = 0;
+	for (int* k = p; k <= q; k++) {
+		num = num * 10 + *k;
+	}
+
+	return num;
+}
+
+1-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+int input(int* p);
+int* sel_next(int* p);
+int number(int* p, int* q);
+int main() {
+	int x[100] = { 0 }, num = 0;
+	int* p = x, *S = x, *E = x;
+	int result = 0;
+	num = input(x);
+	while (E < x + num - 1) {
+		S = E;
+		E = sel_next(S);
+		result = number(S, E);
+		printf("%d\n", result);
+	}
+
+	return 0;
+}
+int input(int* p) {
+	int* q = p;
+	int cnt = 0;
+	scanf("%d", q);
+	while (*q != -1){
+		cnt++;
+		q++;
+		scanf("%d", q);
+	}
+
+	return cnt;
+}
+int* sel_next(int* p) {
+	int* q = p;
+	int flag = 0;
+	if (*q - *(q + 1) > 0) {
+		flag = 0;
+	}
+	else {
+		flag = 1;
+	}
+	if (flag == 1) {
+		while (*q - *(q + 1) < 0) {
+			q++;
+		}
+		return q;
+	}
+	else if (flag == 0) {
+		while (*q - *(q + 1) > 0) {
+			q++;
+		}
+		return q;
+	}
+}
+int number(int* p, int* q) {
+	int num = 0;
+	int* i = p;
+	for (i = p; i <= q; i++) {
+		if (*i == -1) {
+			break;
+		}
+		num = num * 10 + *i;
+	}
+
+	return num;
+}
+
+2-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char arr[101] = "", output[101] = "";
+	char* p = arr, *q = arr;
+	int len = 0, max = 0;
+	gets_s(arr, 101);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			len = strlen(q);
+			if (max < len) {
+				strcpy(output, q);
+				max = len;
+			}
+			q += len + 1;
+		}
+		p++;
+	}
+	len = strlen(q);
+	if (max < len) {
+		strcpy(output, q);
+	}
+	printf("%s", output);
+
+	return 0;
+}
+
+2-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char** arr = NULL, temp[101] = "";
+	char* lstr = NULL, *sstr = NULL;		
+	char* p = NULL, *q = NULL, *tmp = NULL;
+	int N = 0, len = 0;
+	int lnum = 0, snum = 101;
+	int sword = 101, lword = 0;
+	scanf("%d", &N);
+	getchar();
+	arr = (char**)malloc(N * sizeof(char*));
+	if (arr == NULL) {
+		printf("Not enough memory!");
+		return -1;
+	}
+	for (char** p = arr; p < arr + N; p++) {
+		gets(temp);
+		len = strlen(temp);
+		*p = (char*)malloc((len + 1) * sizeof(char));
+		if (*p == NULL) {
+			printf("Not enough memory!");
+			return -1;
+		}
+		strcpy(*p, temp);
+		if (snum > len) {
+			sstr = *p;
+			snum = len;
+		}
+		if (lnum < len) {
+			lstr = *p;
+			lnum = len;
+		}
+	}
+	p = sstr;
+	q = sstr;
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			len = strlen(q);
+			if (len < sword) {
+				tmp = q;
+				sword = len;
+			}
+			q += len + 1;
+		}
+		p++;
+	}
+	len = strlen(q);
+	if (len < sword) {
+		tmp = q;
+	}
+	printf("%s\n", tmp);
+	p = lstr;
+	q = lstr;
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			len = strlen(q);
+			if (len > lword) {
+				tmp = q;
+				lword = len;
+			}
+			q += len + 1;
+		}
+		p++;
+	}
+	len = strlen(q);
+	if (len > lword) {
+		tmp = q;
+	}
+	printf("%s\n", tmp);
+
+	return 0;
+}
+
+3-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char arr[151] = "", word[11] = "";
+	char* p = arr, *q = arr;
+	gets_s(arr, 151);
+	gets_s(word, 11);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			if (strcmp(word, q) != 0) {
+				printf("%s ", q);
+			}
+			q += strlen(q) + 1;
+		}
+		p++;
+	}
+	if (strcmp(word, q) != 0)
+		printf("%s ", q);
+
+	return 0;
+}
+
+3-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char A[151] = "", B[11] = "", C[11] = "", output[301] = "";
+	char* p = A, *q = A;
+	gets_s(A, 151);
+	gets_s(B, 11);
+	gets_s(C, 11);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			if (strcmp(q, B) == 0) {
+				strcat(output, C);
+				strcat(output, " ");
+			}
+			else {
+				strcat(output, q);
+				strcat(output, " ");
+			}
+			q += strlen(q) + 1;
+		}
+		p++;
+	}
+	if (strcmp(q, B) == 0) {
+		strcat(output, C);
+		strcat(output, " ");
+	}
+	else {
+		strcat(output, q);
+		strcat(output, " ");
+	}
+	printf("%s", output);
+
+	return 0;
+}
+
+4-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct person {
+	char name[11];
+	int n1;
+	int n2;
+	double total;
+}person;
+void swap(person* p, person* q);
+int main() {
+	int N = 0, M = 0;
+	person P[100] = { "" }, *p = NULL, *q = NULL;
+	scanf("%d %d", &N, &M);
+	getchar();
+	for (p = P; p < P + N; p++) {
+		scanf("%s %d %d", p->name, &p->n1, &p->n2);
+		getchar();
+		p->total = p->n1 * 0.8 + p->n2 * 0.2;
+	}
+	for (p = P; p < P + N - 1; p++) {
+		for (q = p + 1; q < P + N; q++) {
+			swap(p, q);
+		}
+	}
+	for (p = P; p < P + M; p++) {
+		printf("%s %.1lf\n", p->name, p->total);
+	}
+	return 0;
+}
+void swap(person* p, person* q) {
+	person tmp;
+	if (p->total < q->total) {
+		tmp = *p;
+		*p = *q;
+		*q = tmp;
+	}
+}
+
+4-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct person {
+	char name[11];
+	int n1;
+	int n2;
+	double total;
+}person;
+void swap(person* p, person* q);
+int main() {
+	int N = 0, M = 0;
+	person P[100] = { "" }, *p = NULL, *q = NULL;
+	scanf("%d %d", &N, &M);
+	getchar();
+	for (p = P; p < P + N; p++) {
+		scanf("%s %d %d", p->name, &p->n1, &p->n2);
+		getchar();
+		p->total = p->n1 * 0.8 + p->n2 * 0.2;
+	}
+	for (p = P; p < P + N - 1; p++) {
+		for (q = p + 1; q < P + N; q++) {
+			swap(p, q);
+		}
+	}
+	for (p = P; p < P + M; p++) {
+		printf("%s %.1lf\n", p->name, p->total);
+	}
+	return 0;
+}
+void swap(person* p, person* q) {
+	person tmp;
+	if (p->total < q->total) {
+		tmp = *p;
+		*p = *q;
+		*q = tmp;
+	}
+	else if (p->total == q->total && p->n1 < q->n1) {
+		tmp = *p;
+		*p = *q;
+		*q = tmp;
+	}
+}
+
+4-3.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct person {
+	char name[11];
+	char birth[11];
+	int n1;
+	int n2;
+	double total;
+}person;
+void swap(person* p, person* q);
+int main() {
+	int N = 0, M = 0;
+	person P[100] = { "" }, *p = NULL, *q = NULL;
+	scanf("%d %d", &N, &M);
+	getchar();
+	for (p = P; p < P + N; p++) {
+		scanf("%s %s %d %d", p->name, p->birth, &p->n1, &p->n2);
+		getchar();
+		p->total = p->n1 * 0.8 + p->n2 * 0.2;
+	}
+	for (p = P; p < P + N - 1; p++) {
+		for (q = p + 1; q < P + N; q++) {
+			swap(p, q);
+		}
+	}
+	for (p = P; p < P + M; p++) {
+		printf("%s %.1lf\n", p->name, p->total);
+	}
+
+	return 0;
+}
+void swap(person* p, person* q) {
+	person tmp;
+	if (p->total < q->total) {
+		tmp = *p;
+		*p = *q;
+		*q = tmp;
+	}
+	else if (p->total == q->total && p->n1 < q->n1) {
+		tmp = *p;
+		*p = *q;
+		*q = tmp;
+	}
+	else if (p->total == q->total && p->n1 == q->n1 && strcmp(p->birth, q->birth) < 0) {
+		tmp = *p;
+		*p = *q;
+		*q = tmp;
+	}
+}
+
+5-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct word {
+	char letters[21];
+	int count;
+}word;
+void count_word(struct word* W, int N);
+int main() {
+	int N = 0;
+	word W[100] = { "" }, tmp = { "" };
+	scanf("%d", &N);
+	getchar();
+	for (int i = 0; i < N; i++) {
+		scanf("%s", W[i].letters);
+		getchar();
+		W[i].count = 0;
+	}
+	count_word(W, N);
+	for (int i = 0; i < N - 1; i++) {
+		for (int j = 0; j < N - i - 1; j++) {
+			if (W[j].count < W[j + 1].count) {
+				tmp = W[j];
+				W[j] = W[j + 1];
+				W[j + 1] = tmp;
+			}
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		printf("%d %s\n", W[i].count, W[i].letters);
+	}
+	return 0;
+}
+void count_word(struct word* W, int N) {
+	char vowel[11] = "AEIOUaeiou";
+	word* p = W;
+	for (p = W; p < W + N; p++) {
+		for (int i = 0; p->letters[i]; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (p->letters[i] == vowel[j]) {
+					p->count++;
+				}
+			}
+		}
+	}
+}
