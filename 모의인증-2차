@@ -1,0 +1,310 @@
+1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+void input(int* p, int N);
+void output(int* p, int K);
+int main() {
+	int M = 0, N = 0, K = 0;
+	int a[100] = { 0 }, b[100] = { 0 };
+	int* p = a, *q = b;
+	scanf("%d %d", &M, &N);
+	input(a, M);
+	input(b, N);
+	scanf("%d", &K);
+	while (p < a + M || q < b + N) {
+		if (p < a + M) {
+			output(p, K);
+			p += K;
+		}
+		if (q < b + N) {
+			output(q, K);
+			q += K;
+		}
+	
+	}
+
+	return 0;
+}
+void input(int* p, int N) {
+	for (int *q = p; q < p + N; q++)
+		scanf("%d", q);
+}
+void output(int* p, int K) {
+	for (int *q = p; q < p + K; q++)
+		printf(" %d", *q);
+}
+
+2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+typedef struct complex {
+	double real;
+	double img;
+	double n;
+}complex;
+complex add(complex x, complex y);
+complex sub(complex x, complex y);
+void abs_val(complex *p1, complex *p2, complex *p3);
+int main() {
+	complex a[3] = { 0 }, x = { 0 }, y = { 0 };
+	for (int i = 0; i < 3; i++) {
+		scanf("%lf %lf", &a[i].real, &a[i].img);
+	}
+	abs_val(&a[0], &a[1], &a[2]);
+	x = add(a[0], a[2]);
+	printf("%.1lf%+.1lfi\n", x.real, x.img);
+	y = sub(a[0], a[2]);
+	printf("%.1lf%+.1lfi\n", y.real, y.img);
+
+	return 0;
+}
+
+complex add(complex x, complex y) {
+	complex a = { 0 };
+	a.real = x.real + y.real;
+	a.img = x.img + y.img;
+	return a;
+}
+complex sub(complex x, complex y) {
+	complex a = { 0 };
+	a.real = x.real - y.real;
+	a.img = x.img - y.img;
+	return a;
+}void abs_val( complex *p1,  complex *p2,  complex *p3){
+	complex tmp = { 0 };
+	p1->n = sqrt(p1->real*p1->real + p1->img*p1->img);
+	p2->n = sqrt(p2->real*p2->real + p2->img*p2->img);
+	p3->n = sqrt(p3->real*p3->real + p3->img*p3->img);
+	if (p1->n < p2->n) {
+		tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+	}
+	if (p2->n < p3->n) {
+		tmp = *p2;
+		*p2 = *p3;
+		*p3 = tmp;
+	}
+	if (p1->n < p2->n) {
+		tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+	}
+}
+
+3.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int main() {
+	int N, len = 0, a = 0, cnt = 0, len1 = 0, b = 0;
+	char X[101] = "", temp[101] = "";
+	char **Y = NULL, *ch = NULL;			
+	char* p = NULL;
+	scanf("%d", &N);
+	getchar();
+	scanf("%s", X);
+	getchar();
+	len1 = strlen(X);
+	Y = (char**)malloc(N * sizeof(char*));
+	if (Y == NULL) {
+		printf("Not enough memory");
+		return -1;
+	}
+	ch = *Y;
+	for (int i = 0; i < N; i++) {
+		gets(temp);
+		len = strlen(temp);
+		Y[i] = (char*)malloc((len + 1) * sizeof(char));
+		if (Y[i] == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		strcpy(Y[i], temp);
+		p = Y[i];
+		b = 0;
+		while (p < Y[i] + len) {
+			if (strncmp(p, X, len1) == 0) {
+				b++;
+				p += len1 - 1;
+			}
+			p++;
+		}
+		if (cnt < b) {
+			ch = Y[i];
+			cnt = b;
+			a++;
+		}
+	}
+	if (a) {
+		printf("%s", ch);
+	}
+	else {
+		printf("NONE");
+	}
+	for (int i = 0; i < N; i++) {
+		free(Y[i]);
+	}
+	free(Y);
+
+	return 0;
+}
+
+4.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct student {
+	int id;
+	int s1;
+	int s2;
+	double avg;
+}student;
+int main() {
+	int N, a = 0, b = 0, cnt = 0, i, j;
+	student* p = NULL, tmp = { 0 };
+	scanf("%d", &N);
+	getchar();
+	a = (int)(N * 0.6);
+	b = (int)(N * 0.8);
+	p = (student*)malloc(N * sizeof(student));
+	if (p == NULL) {
+		printf("Not enough memory");
+		return -1;
+	}
+	for (i = 0; i < N; i++) {
+		scanf("%d %d %d", &p[i].id, &p[i].s1, &p[i].s2);
+		p[i].avg = p[i].s1 * 0.4 + p[i].s2 * 0.6;
+	}
+	for (i = 0; i < N - 1; i++) {
+		for (j = 0; j < N - i - 1; j++) {
+			if (p[j].avg < p[j + 1].avg) {
+				tmp = p[j];
+				p[j] = p[j + 1];
+				p[j + 1] = tmp;
+			}
+		}
+	}
+	for (i = a - 1; p[i].avg == p[i + 1].avg; i++) {
+		a++;
+	}
+	for (i = a; i < N - 1; i++) {
+		for (j = a; j < N - 1 - (i - a); j++) {
+			if (p[j].s2 < p[j + 1].s2) {
+				tmp = p[j];
+				p[j] = p[j + 1];
+				p[j + 1] = tmp;
+			}
+		}
+	}
+	for (i = b - 1; p[i].s2 == p[i + 1].s2; i++) {
+		b++;
+	}
+	for (i = 0; i < b; i++) {
+		for (j = 0; j < b - i - 1; j++) {
+			if (p[j].id > p[j + 1].id) {
+				tmp = p[j];
+				p[j] = p[j + 1];
+				p[j + 1] = tmp;
+			}
+		}
+	}
+
+	for (i = 0; i < b; i++) {
+		printf("%d\n", p[i].id);
+	}
+	free(p);
+
+	return 0;
+}
+
+5.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int check_row(int **p, int M, int N);
+int check_col(int **p, int M, int N);
+int main() {
+	int M, N, x, y, z;
+	int **p = NULL;
+	int n = 0, tmp = 0;
+	scanf("%d %d", &M, &N);
+	p = (int**)malloc(M * sizeof(int*));
+	if (p == NULL)
+		return -1;
+	for (int i = 0; i < M; i++) {
+		p[i] = (int*)malloc(N * sizeof(int));
+		if (p[i] == NULL) 
+			return -1;
+		for (int j = 0; j < N; j++) {
+			p[i][j] = 0;
+		}
+	}
+	while (1) {
+		scanf("%d %d %d", &x, &y, &z);
+		if (x == 0 && y == 0 && z == 0) {
+			break;
+		}
+		p[x][y] = z;
+	}
+	for (int i = 0; i < M; i++) {
+		for (int j = 0; j < N; j++) {
+			printf(" %d", p[i][j]);
+		}
+		printf("\n");
+	}
+	tmp = check_row(p, M, N);
+	if (n < tmp) {
+		n = tmp;
+	}
+	tmp = check_col(p, M, N);
+	if (n < tmp) {
+		n = tmp;
+	}
+	printf("%d", n);
+	for (int i = 0; i < M; i++) {
+		free(p[i]);
+	}
+	free(p);
+
+	return 0;
+}
+int check_row(int **p, int M, int N) {
+	int cnt = 0, tmp = 0;
+	for (int i = 0; i < M; i++) {
+		for (int j = 0; j < N; j++) {
+			for (int k = j; k < N && p[i][k] == 0; k++) {
+				tmp++;
+			}
+			if (cnt < tmp) {
+				cnt = tmp;
+			}
+			tmp = 0;
+		}
+	}
+	return cnt;
+}
+int check_col(int **p, int M, int N) {
+	int cnt = 0, tmp = 0;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			for (int k = j; k < M && p[k][i] == 0; k++) {
+				tmp++;
+			}
+			if (cnt < tmp) {
+				cnt = tmp;
+			}
+			tmp = 0;
+		}
+	}
+	return cnt;
+}
+
