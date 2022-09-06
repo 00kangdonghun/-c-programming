@@ -1,0 +1,261 @@
+1-1.
+
+1-2.
+#pragma warning (disable: 4996)  
+#include<stdio.h>  
+#include<string.h> 
+#include<stdlib.h>
+struct student {
+	char name[10];
+	char year[11];
+	char grade;
+};
+int main() {
+	struct student s[5], *p = { 0 };
+	int i, cnt = 0;
+	char ch[10];
+	for (i = 0; i < 5; i++) {
+		scanf("%s %s %c", s[i].name, s[i].year, &s[i].grade);
+		getchar();
+	}
+	scanf("%s", ch);
+	for (i = 0; i < 5; i++) {
+		if (strcmp(ch, s[i].name) == 0) {
+			p = &s[i];
+		}
+	}
+	for (i = 0; i < 5; i++) {
+		if (p->grade == s[i].grade&&strncmp(p->year, s[i].year, 4)==0 && p->name != s[i].name) {
+			printf(" %s", s[i].name);
+			cnt++;
+		}
+	}
+	if (cnt == 0) {
+		printf("0");
+	}
+
+	return 0;
+}
+
+2.
+#pragma warning (disable: 4996)  
+#include<stdio.h>  
+#include<string.h> 
+#include<stdlib.h>
+struct _bank { 
+	int id;
+	int arrival_time;
+	int service_time;
+	int start_time;
+	int waiting_time;
+};
+void waitingtime(struct _bank guest[], int N);
+double avgtime(struct _bank guest[], int N);
+int main() {
+	struct _bank b[100];
+	int N, i;
+	double avg;
+	scanf("%d", &N);
+	for (i = 0; i < N; i++) {
+		scanf("%d %d %d", &b[i].id, &b[i].arrival_time, &b[i].service_time);
+
+	}
+	waitingtime(b, N);
+	avg = avgtime(b, N);
+	printf("%.2lf", avg);
+
+	return 0;
+}
+void waitingtime(struct _bank guest[], int N) {
+	int sum = 0, i, j;
+	for (i = 0; i < N; i++) {
+		sum = 0;
+		for (j = 0; j < i; j++) {
+			sum += guest[j].service_time;
+		}
+		guest[i].waiting_time = sum - guest[i].arrival_time;
+	}
+}
+double avgtime(struct _bank guest[], int N) {
+	double avg = 0.0;
+	int i;
+	for (i = 0; i < N; i++) {
+		avg += guest[i].waiting_time;
+	}
+	return avg / N;
+}
+
+3-1.
+
+3-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+struct hotel_info {
+	char name[31];
+	int grade;
+	double rate;
+	double distance;
+	char ch;
+};
+int in_hotel_info(struct hotel_info *p);
+void out_hotel_info(struct hotel_info *p, int N, int G, double D);
+int main() {
+	struct hotel_info ht[100] = { 0 }, *p = ht;
+	int n = 0;
+	int G;
+	double D;
+	n = in_hotel_info(ht);
+	scanf("%d %lf", &G, &D);
+	out_hotel_info(ht, n, G, D);
+
+	return 0;
+}
+int in_hotel_info(struct hotel_info *p) {
+	struct hotel_info *q = p;
+	int cnt = 0;
+	scanf("%s", q->name);
+	while (strcmp(q->name, "0")!=0) {
+		scanf("%d %lf %lf %c", &q->grade, &q->rate, &q->distance, &q->ch);
+		getchar();
+		cnt++;
+		q++;
+		scanf("%s", q->name);
+	}
+	return cnt;
+}
+void out_hotel_info(struct hotel_info *p, int N, int G, double D) {
+	struct hotel_info *q, *r, tmp;
+	for (q = p; q < p + N - 1; q++) {
+		for (r = q + 1; r < p + N; r++) {
+			if (r->rate > q->rate || (r->rate == q->rate && strcmp(r->name, q->name) < 0)) {
+				tmp = *r;
+				*r = *q;
+				*q = tmp;
+			}
+		}
+	}
+	for (q = p; q < p + N; q++) {
+		if (q->grade >= G && q->distance <= D) {
+			printf("%s %d %.1lf %.1lf %c\n", q->name, q->grade, q->rate, q->distance, q->ch);
+		}
+	}
+}
+
+
+4-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+struct parking {
+	int carnum;
+	int stnum;
+	char inouttime[40];
+	int time;
+	int penalty;
+	int pay;
+};
+int main() {
+	struct parking p[100];
+	int i, j, k, n, m, intime, outtime, cnt = 0, a, inputcarnum[100];
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) {
+		scanf("%d %d", &p[i].carnum, &p[i].stnum);
+		gets(p[i].inouttime);
+	}
+	for (i = 0; i < n; i++) {
+		intime = 0;
+		outtime = 0;
+		for (j = 0;; j++) {
+			if (p[i].inouttime[j] == ':') {
+				k = j - 2;
+				while (k != j + 2) {
+					if (k == j) {
+						intime *= 60;
+					}
+					else if (k == j - 2 || k == j + 1) {
+						intime += (p[i].inouttime[k] - '0') * 10 + p[i].inouttime[k + 1] - '0';
+					}
+					k++;
+				}
+				j++;
+				break;
+			}
+		}
+		for (;; j++) {
+			if (p[i].inouttime[j] == ':') {
+				k = j - 2;
+				while (k != j + 2) {
+					if (k == j) {
+						outtime *= 60;
+					}
+					else if (k == j - 2 || k == j + 1) {
+						outtime += (p[i].inouttime[k] - '0') * 10 + p[i].inouttime[k + 1] - '0';
+					}
+					k++;
+				}
+				break;
+			}
+		}
+		p[i].time = outtime - intime;
+	}
+	for (i = 0; i < n; i++) {
+		a = 0;
+		for (j = 0; j < i; j++) {
+			if (p[i].stnum == p[j].stnum && p[i].carnum != p[j].carnum) {
+				a++;
+			}
+		}
+		if (a != 0) {
+			for (j = 0; j < n; j++) {
+				if (p[i].stnum == p[j].stnum) {
+					p[j].penalty = 1;
+				}
+			}
+		}
+	}
+	for (i = 0; i < n; i++) {
+		if (p[i].penalty == 1) {
+			p[i].pay = 100000;
+		}
+		else {
+			if (p[i].time <= 60) {
+				p[i].pay = 3000;
+			}
+			else if (p[i].time <= 330) {
+				p[i].pay = 3000;
+				p[i].time -= 60;
+				while (p[i].time > 0) {
+					p[i].time -= 10;
+					p[i].pay += 1000;
+				}
+			}
+			else {
+				p[i].pay = 30000;
+			}
+		}
+	}
+	scanf("%d", &m);
+	for (i = 0; i < m; i++) {
+		scanf("%d", &inputcarnum[i]);
+	}
+	for (i = 0; i < m; i++) {
+		for (j = 0; j < n; j++) {
+			if (inputcarnum[i] == p[j].carnum) {
+				printf("%d\n", p[j].pay);
+			}
+		}
+	}
+
+	return 0;
+}
+
+5321 160123 2017-09-03 07:00 2017-09-03 15:12
+1234 151237 2017-09-03 08:00 2017-09-03 13:42
+8623 158762 2017-09-03 06:00 2017-09-03 23:59
+9752 171893 2017-09-03 13:55 2017-09-03 15:22
+5715 151237 2017-09-03 15:43 2017-09-03 17:31
+7473 160123 2017-09-03 16:41 2017-09-03 19:00
+6309 174099 2017-09-03 15:33 2017-09-03 14:12
