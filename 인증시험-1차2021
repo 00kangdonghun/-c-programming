@@ -1,0 +1,224 @@
+1.
+
+2-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	int n, a = 0, b = 0;
+	char ch[21];
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		a = 0;
+		b = 0;
+		scanf("%s", ch);
+		for (int j = 0; j < strlen(ch); j++) {
+			if (ch[j] == 'a' || ch[j] == 'e' || ch[j] == 'i' || ch[j] == 'o' || ch[j] == 'u') {
+				a++;
+			}
+			else {
+				b++;
+			}
+		}
+		printf("%s %d %d\n", ch, b, a);
+	}
+
+
+
+	return 0;
+}
+
+2-2.
+
+3.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char arr[151] = "", word[11] = "";
+	char out1[151] = "", out2[151] = "";
+	char *p = arr, *q = arr;
+	gets_s(arr, 151);
+	gets_s(word, 11);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			if (strcmp(word, q) > 0) {
+				strcat(out1, q);
+				strcat(out1, " ");
+			}
+			else if (strcmp(word, q) < 0) {
+				strcat(out2, q);
+				strcat(out2, " ");
+			}
+			q += strlen(q) + 1;
+		}
+		p++;
+	}
+	if (strcmp(word, q) > 0) {
+		strcat(out1, q);
+		strcat(out1, " ");
+	}
+	else if (strcmp(word, q) < 0) {
+		strcat(out2, q);
+		strcat(out2, " ");
+	}
+
+	printf("%s\n", out1);
+	printf("%s\n", out2);
+
+
+	return 0;
+}
+
+/*
+Apple sells phones and services
+phones
+bob dog kite an apple
+cat
+*/
+
+4-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+struct equation {
+	int a; 
+	int b;
+	int c; 
+	char det[7]; 
+};
+void root(struct equation *p);
+int main() {
+	struct equation s[10], *p = s;
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d %d", &s[i].a, &s[i].b, &s[i].c);
+	}
+	for (p = s; p < s + n; p++) {
+		root(p);
+	}
+	for (int i = 0; i < n; i++) {
+		printf("%d %d %d %s\n", s[i].a, s[i].b, s[i].c, s[i].det);
+	}
+
+	return 0;
+}
+void root(struct equation *p) {
+	if ((p->b)*(p->b) - 4 * (p->a)*(p->c) > 0) {	
+		strcpy(p->det, "single");
+	}
+	else if ((p->b)*(p->b) - 4 * (p->a)*(p->c) == 0) {
+		strcpy(p->det, "double");
+	}
+	else if ((p->b)*(p->b) - 4 * (p->a)*(p->c) < 0) {
+		strcpy(p->det, "none");
+	}
+}
+
+4-2(x).
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+struct equation {
+	int a; 
+	int b;
+	int c; 
+	char det[7]; 
+	double s1;
+	double s2;
+};
+void root(struct equation *p);
+int main() {
+	struct equation s[10], *p = s;
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		scanf("%d %d %d", &s[i].a, &s[i].b, &s[i].c);
+	}
+	for (p = s; p < s + n; p++) {
+		root(p);
+	}
+	for (int i = 0; i < n; i++) {
+		printf("%d %d %d %s %.3f %.3f\n", s[i].a, s[i].b, s[i].c, s[i].det, s[i].s1, s[i].s2);
+	}
+
+	return 0;
+}
+void root(struct equation *p) {
+	if ((p->b)*(p->b) - 4 * (p->a)*(p->c) > 0) {	
+		strcpy(p->det, "single");
+		p->s1 = (-(p->b) + sqrt((p->b)*(p->b) - 4 * (p->a)*(p->c))) / (2 * p->a);
+		p->s2 = (-(p->b) - sqrt((p->b)*(p->b) - 4 * (p->a)*(p->c))) / (2 * p->a);
+	}
+	else if ((p->b)*(p->b) - 4 * (p->a)*(p->c) == 0) {
+		strcpy(p->det, "double");
+		p->s1 = (-(p->b) + sqrt((p->b)*(p->b) - 4 * (p->a)*(p->c))) / (2 * p->a);
+		p->s2 = '\0';
+	}
+	else if ((p->b)*(p->b) - 4 * (p->a)*(p->c) < 0) {
+		strcpy(p->det, "none");
+		p->s1 = '\0';
+		p->s2 = '\0';
+	}
+}
+
+5.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+struct word {
+	char letters[21]; 
+	int count;
+};
+void count_word(struct word *word, int N);
+void swap(struct word *p, struct word *q);
+int main() {
+	struct word s[100], tmp, *p = s;
+	int N;
+	scanf("%d", &N);
+	for (int i = 0; i < N; i++) {
+		scanf("%s", s[i].letters);
+		s[i].count = 0;
+	}
+	count_word(p, N);
+	for (int i = 0; i < N - 1; i++) {	
+		for (int j = 0; j < N - i - 1; j++) {
+			if (s[j].count > s[j + 1].count) {
+				swap(p, p + 1);
+			}
+		}
+	}
+	for (int i = 0; i < N; i++) {
+		printf("%d %s\n", s[i].count, s[i].letters);
+	}
+
+	return 0;
+}
+void count_word(struct word *word, int N) {
+	struct word *p = word;
+	char vowel[5] = "AEIOU";
+	for (p = word; p < word + N; p++) {
+		for (int i = 0; p->letters[i]; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (p->letters[i] == vowel[j]) {
+					p->count++;
+				}
+			}
+		}
+	}
+}
+void swap(struct word *p, struct word *q) {
+	struct word tmp;
+	tmp = *p;
+	*p = *q;
+	*q = tmp;
+}
