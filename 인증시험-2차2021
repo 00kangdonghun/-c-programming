@@ -1,0 +1,479 @@
+1-1.
+
+1-2.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct student_info {
+	char name[11];
+	int S1;
+	int S2;
+	double avg;
+}student_info;
+void insertData(student_info* s, int N);
+double getAllavg(student_info s[], int N);
+void printResult(student_info* s, int N, double avg);
+int main() {
+	int N = 0;
+	double total_avg = 0.0;
+	student_info S[100] = { "" };
+	scanf("%d", &N);
+	getchar();
+	insertData(S, N);
+	total_avg = getAllavg(S, N);
+	printResult(S, N, total_avg);
+
+	return 0;
+}
+void insertData(student_info* s, int N) {
+	student_info* p = s;
+	for (p = s; p < s + N; p++) {
+		scanf("%s %d %d", p->name, &p->S1, &p->S2);
+		p->avg = p->S1 * 0.4 + p->S2 * 0.6;
+	}
+}
+double getAllavg(student_info s[], int N) {
+	student_info* p = s;
+	int a;
+	double total = 0.0;
+	double big = 0.0;
+	for (p = s; p < s + N; p++) {
+		total += p->avg;
+	}
+	total /= (double)N;
+	printf("%.2lf\n", total);
+	for (int i = 0; i < N; i++) {
+		if (s[i].avg > big) {
+			big = s[i].avg;
+			a = i;
+		}
+	}
+	
+	printf("first=%s %.2lf\n", s[a].name, s[a].avg);
+	
+	
+	return total;
+}
+void printResult(student_info* s, int N, double avg) {
+	student_info* p = s;
+	for (p = s; p < s + N; p++) {
+		if (p->avg <= avg)
+			printf("%s %.2lf\n", p->name, p->avg);
+	}
+}
+
+/*
+Kim 80 46
+Choi 76 98
+Park 64 89
+Chung 87 100
+Lee 40 28
+Kang 65 77
+*/
+
+2-1.
+
+2-2.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int check_u(char* p, char* q);
+int main() {
+	int N, M1, M2;
+	int cnt = 0, m = 100;
+	char str1[101] = "", str2[101] = "";
+	scanf("%d", &N);
+	scanf("%d %d", &M1, &M2);
+	getchar();
+	for (int i = 0; i < N; i++) {
+		gets(str1);
+		cnt = check_u(str1 + M1, str1 + M2);
+		if (!cnt) {
+			continue;
+		}
+		if (m > cnt) {
+			m = cnt;
+			strcpy(str2, str1);
+		}
+		else if (m == cnt && strlen(str2) <= strlen(str1)) {
+			strcpy(str2, str1);
+		}
+	}
+	printf("%s", str2);
+
+	return 0;
+}
+int check_u(char* p, char* q) {
+	char *r = p;
+	int cnt = 0;
+	for (r = p; r <= q && *r; r++) {
+		if ('A' <= *r&& *r <= 'Z') {
+			cnt++;
+		}
+	}
+
+	return cnt;
+}
+
+/*
+ADVANCED C PROGRAMMING
+PROGRAM
+Good
+****C LANGUAGE
+THIS IS STRING
+*/
+
+3-1.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char A[101] = "", B[101] = "", output[101] = "";
+	char* Aword[20] = { NULL }, *Bword[20] = { NULL };
+	char* p = A, *q = A;
+	int Asize = 0, Bsize = 0;
+	int cnt = 0;
+	int len = 0;
+	int a = 0;
+	gets(A);
+	gets(B);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			Aword[Asize] = q;
+			Asize++;
+			q += strlen(q) + 1;		
+		}
+		p++;
+	}
+	Aword[Asize] = q;
+	Asize++;
+	p = B;
+	q = B;
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			Bword[Bsize] = q;
+			Bsize++;
+			q += strlen(q) + 1;		
+		}
+		p++;
+	}
+	Bword[Bsize] = q;
+	Bsize++;
+	for (int i = 0; i < Asize; i++) {
+		for (int j = 0; j < Bsize; j++) {
+			if (strcmp(Aword[i], Bword[j]) == 0) {
+				cnt++;
+				a = strlen(Aword[i]);
+				if (len < a) {
+					len = a;
+					strcpy(output, Aword[i]);
+				}
+				else if (len == a && strcmp(output, Aword[i]) > 0) {
+					strcpy(output, Aword[i]);
+				}
+			}
+			a = 0;
+		}
+	}
+	printf("%d\n", cnt);
+	printf("%s\n", output);
+
+	return 0;
+}
+
+3-2.
+
+4-1.
+
+4-2.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int num_of_divisors(int M, int *arr);
+int cal_sum(int *onearr, int size);
+int main() {
+	int N;
+	int M , K, sum = 0, max = 0;
+	int** darr, *num, temp[20];
+	scanf("%d", &N);
+	darr = (int**)malloc(N * sizeof(int*));
+	if (darr == NULL) {
+		printf("not enough memory");
+		return -1;
+	}
+	num = (int*)malloc(N * sizeof(int));
+	if (num == NULL) {
+		printf("not enough memory");
+		return -1;
+	}
+	for (int i = 0; i < N; i++) {
+		scanf("%d", &M);
+		num[i] = num_of_divisors(M, temp);
+		if (num[i] != -1) {
+			darr[i] = (int*)malloc(num[i] * sizeof(int));
+			if (darr[i] == NULL) {
+				printf("not enough memory");
+				return -1;
+			}
+			for (int j = 0; j < num[i]; j++) {
+				darr[i][j] = temp[j];
+			}
+		}
+	}
+	scanf("%d", &K);
+	if (num[K] == -1) {
+		printf("-1");
+	}
+	else {
+		for (int i = num[K] - 1; i >= 0; i--) {
+			printf("%d ", darr[K][i]);
+		}
+	}
+	printf("\n");
+	for (int i = 0; i < N; i++) {
+		if (num[i] != -1) {
+			sum = cal_sum(darr[i], num[i]);
+			if (sum > max) {
+				max = sum;
+			}
+		}
+	}
+	printf("%d\n", max);
+	for (int i = 0; i < N; i++) {
+		free(darr[i]);
+	}
+	free(num);
+	free(darr);
+
+	return 0;
+}
+int num_of_divisors(int M, int *arr) {
+	int cnt = 0;
+	for (int i = 1; i <= M; i++){
+		if (M % i == 0) {
+			arr[cnt] = i;
+			cnt++;
+		}
+		if (cnt > 20) {
+			return -1;
+		}
+	}
+	return cnt;
+}
+int cal_sum(int *onearr, int size) {
+	int* p = onearr, sum = 0;
+	for (p = onearr; p < onearr + size; p++) {
+		sum += *p;
+	}
+	return sum;
+}
+
+5-1.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct job {
+	char *name; 
+	char *start; 
+	char *end; 
+	int money; 
+}ABC;
+int main() {
+	int N, len = 0;
+	char str[101] = "";
+	ABC* a = NULL, *p = NULL;
+	scanf("%d", &N);
+	a = (ABC*)malloc(N * sizeof(ABC));
+	if (a == NULL) {
+		printf("Not enough memory");
+		return -1;
+	}
+	for (int i = 0; i < N; i++) {
+		scanf("%s", str);
+		getchar();
+		len = strlen(str);
+		a[i].name = (char*)malloc((len + 1) * sizeof(char));
+		if (a[i].name == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		strcpy(a[i].name, str);
+		a[i].start = (char*)malloc(9 * sizeof(char));
+		if (a[i].start == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		scanf("%s", a[i].start);
+		getchar();
+		a[i].end = (char*)malloc(9 * sizeof(char));
+		if (a[i].end == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		scanf("%s", a[i].end);
+		scanf("%d", &a[i].money);
+	}
+	p = a;
+	for (int i = 0; i < N; i++) {
+		if (strcmp(p->start, a[i].start) > 0) {
+			p = &a[i];
+		}
+	}
+	printf("%s %s %s %d", p->name, p->start, p->end, p->money);
+	for (int i = 0; i < N; i++) {
+		free(a[i].name);
+		free(a[i].start);
+		free(a[i].end);
+	}
+	free(a);
+
+	return 0;
+}
+
+5-2.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct job {
+	char* name; // 작업명 (공백 없이 최대 100자)
+	char* start; // 작업 시작 시간 (HH:MM:SS; 24시간제 시간,분,초 예)15:32:35)
+	char* end; // 작업 종료 시간 (위와 동일)
+	int money; // 작업 대금 (수익)
+}ABC;
+int check_dup(ABC job1, ABC job2, ABC job3);
+char* get_start_end(ABC job1, ABC job2, ABC job3);
+int main() {
+	int N;
+	int len = 0, cnt = 0;
+	int tmp = 0, c = 0;
+	int max = 0;
+	char ch[101] = "", *p = NULL;
+
+	ABC* a = NULL, *flag = NULL;
+	ABC AA, BB, CC;
+	scanf("%d", &N);
+	a = (ABC*)malloc(N * sizeof(ABC));
+	if (a == NULL) {
+		printf("Not enough memory");
+		return -1;
+	}
+	for (int i = 0; i < N; i++) {
+		scanf("%s", ch);
+		getchar();
+		len = strlen(ch);
+		a[i].name = (char*)malloc((len + 1) * sizeof(char));
+		if (a[i].name == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		strcpy(a[i].name, ch);
+		a[i].start = (char*)malloc(9 * sizeof(char));
+		if (a[i].start == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		scanf("%s", a[i].start);
+		getchar();
+		a[i].end = (char*)malloc(9 * sizeof(char));
+		if (a[i].end == NULL) {
+			printf("Not enough memory");
+			return -1;
+		}
+		scanf("%s", a[i].end);
+		scanf("%d", &a[i].money);
+		getchar();
+	}
+	for (int i = 0; i < N; i++) {
+		for (int j = i + 1; j < N; j++) {
+			for (int k = j + 1; k < N; k++) {
+				tmp = check_dup(a[i], a[j], a[k]);
+				if (tmp) {
+					c = a[i].money + a[j].money + a[k].money;
+					if (c > max) {
+						AA = a[i];
+						BB = a[j];
+						CC = a[k];
+						max = c;
+						p = get_start_end(a[i], a[j], a[k]);
+						cnt++;
+					}
+				}
+			}
+		}
+	}
+	if (cnt) {
+		printf("%s %s %s\n", AA.name, BB.name, CC.name);
+		printf("%d\n", max);
+		printf("%s", p);
+	}
+	else {
+		printf("NONE");
+	}
+	printf("%s %s %s %d", flag->name, flag->start, flag->end, flag->money);
+	for (int i = 0; i < N; i++){
+		free(a[i].name);
+		free(a[i].start);
+		free(a[i].end);
+	}
+	free(a);
+
+	return 0;
+}
+int check_dup(ABC job1, ABC job2, ABC job3) {
+	if (strcmp(job1.end, job2.start) < 0 && strcmp(job2.end, job3.start) < 0) {
+		return 1;
+	}
+	if (strcmp(job1.end, job3.start) < 0 && strcmp(job3.end, job2.start) < 0) {
+		return 1;
+	}
+	if (strcmp(job2.end, job1.start) < 0 && strcmp(job1.end, job3.start) < 0) {
+		return 1;
+	}
+	if (strcmp(job2.end, job3.start) < 0 && strcmp(job3.end, job1.start) < 0) {
+		return 1;
+	}
+	if (strcmp(job3.end, job1.start) < 0 && strcmp(job1.end, job2.start) < 0) {
+		return 1;
+	}
+	if (strcmp(job3.end, job2.start) < 0 && strcmp(job2.end, job1.start) < 0) {
+		return 1;
+	}
+	return 0;
+}
+char* get_start_end(ABC job1, ABC job2, ABC job3) {
+	char* a = NULL;
+	a = (char*)malloc(17 * sizeof(char));
+	if (a == NULL) {
+		printf("Not enough memory");
+		return -1;
+	}
+	if (strcmp(job1.start, job2.start) < 0 && strcmp(job1.start, job3.start) < 0) {
+		strcpy(a, job1.start);
+	}
+	else if (strcmp(job2.start, job1.start) < 0 && strcmp(job2.start, job3.start) < 0) {
+		strcpy(a, job2.start);
+	}
+	else if (strcmp(job3.start, job1.start) < 0 && strcmp(job3.start, job2.start) < 0) {
+		strcpy(a, job3.start);
+	}
+	strcat(a, " ");
+	if (strcmp(job1.end, job2.end) > 0 && strcmp(job1.end, job3.end) > 0) {
+		strcat(a, job1.end);
+	}
+	else if (strcmp(job2.end, job1.end) > 0 && strcmp(job2.end, job3.end) > 0) {
+		strcat(a, job2.end);
+	}
+	else if (strcmp(job3.end, job1.end) > 0 && strcmp(job3.end, job2.end) > 0) {
+		strcat(a, job3.end);
+	}
+	return a;
+}
+
