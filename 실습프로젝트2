@@ -1,0 +1,167 @@
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct student {
+	char *name;
+	char *call;
+	char *birth;
+}; //구조체 선언
+void Registration(struct student *p, int *n); 
+void ShowAll(struct student *p, int n); 
+void Delete(struct student *p, int *n); 
+void FindByBirth(struct student *p, int n); 
+void Exit(struct student *p, int n); //함수 원형 선언
+int main() {
+	int n = 0, a, Max_num, i; //변수 선언
+	struct student *p; //포인터 구조체 선언
+	printf("Max_num:"); //최대 입력 인원 수를
+	scanf("%d", &Max_num); //Max_num입력
+	p = (struct student*)malloc(Max_num * sizeof(struct student)); //포인터 구조체 동적할당
+	while (1) { //반복문
+		printf("*****Menu*****\n"); //*****Menu*****출력
+		printf("<1.Registration><2.ShowAll><3.Delete><4.FindByBirth><5.Exit>\n"); //<1.Registration><2.ShowAll><3.Delete><4.FindByBirth><5.Exit>출력
+		printf("Enter_the_menu_number:"); //Enter_the_menu_number:출력
+		scanf("%d", &a); //input입력
+		if (a == 1) {
+			if (Max_num == n || n == 100) { //만약 Max_num이 n이거나 n이 100이면
+				printf("OVERFLOW\n"); //OVERFLOW출력
+			}
+			else { //그 외의 경우
+				Registration(p, &n); //Registration실행
+			} 
+		}
+		else if (a == 2) {
+			ShowAll(p, n); //ShowAll실행
+		}
+		else if (a == 3) {
+			if (n == 0) { //n이 0이면
+				printf("NO MEMBER\n"); //NO MEMBER출력
+			} 
+			else { //그 외의 경우
+				Delete(p, &n); //Delete실행
+			}
+		}
+		else if (a == 4) {
+			FindByBirth(p, n); //FindByBirth실행
+		}
+		else if (a == 5) {
+			Exit(p, n); //Exit실행
+			return 0;
+		}
+	}
+	return 0;
+}
+void Registration(struct student *p, int *n) { //1을 눌렀을 때
+	char ch[101] = ""; //변수 선언
+	int i, j, len; //변수 선언
+	struct student tmp; //구조체 tmp선언
+	printf("Name:"); //Name:출력
+	scanf("%s", ch); //ch입력
+	len = strlen(ch); //len에 ch의 길이 저장
+	p[*n].name = (char*)malloc((len + 1) * sizeof(char)); //구조체에 이름의 크기만큼 동적할당
+	strcpy(p[*n].name, ch); //p[*n].name에 ch복사
+	printf("Phone_number:"); //Phone_number:출력
+	scanf("%s", ch); //ch입력
+	len = strlen(ch); //len에 ch의 길이 저장
+	p[*n].call = (char*)malloc((len + 1) * sizeof(char)); //구조체에 번호의 크기만큼 동적할당
+	strcpy(p[*n].call, ch); //p[*n].call에 ch복사
+	printf("Birth:"); //Birth:출력
+	scanf("%s", ch); //ch입력
+	len = strlen(ch); //len에 ch의 길이 저장
+	p[*n].birth = (char*)malloc((len + 1) * sizeof(char)); //구조체에 생일의 크기만큼 동적할당
+	strcpy(p[*n].birth, ch); //p[*n].birth에 ch복사
+	(*n)++; //인원 추가
+	for (i = 0; i < *n; i++) {
+		for (j = 0; j < *n - 1 - i; j++) {
+			if (strcmp(p[j].name, p[j + 1].name) > 0) { //strcmp(p[j].name, p[j + 1].name) > 0이면
+				len = strlen(p[j].name); //len에 p[j].name의 길이 저장
+				tmp.name = (char*)malloc((len + 1) * sizeof(char)); //구조체에 이름의 크기만큼 동적할당
+				strcpy(tmp.name, p[j].name); //tmp.name에 p[j].name복사
+				len = strlen(p[j + 1].name); //len에 p[j + 1].name길이 저장
+				p[j].name = (char*)malloc((len + 1) * sizeof(char)); //구조체에 이름의 크기만큼 동적할당
+				strcpy(p[j].name, p[j + 1].name); //p[j].name에 p[j + 1].name복사
+				len = strlen(tmp.name); //len에 tmp.name길이 저장
+				p[j + 1].name = (char*)malloc((len + 1) * sizeof(char)); //구조체에 이름의 크기만큼 동적할당
+				strcpy(p[j + 1].name, tmp.name); //p[j + 1].name에 tmp.name복사
+				len = strlen(p[j].call); //len에 p[j].call길이 저장
+				tmp.call = (char*)malloc((len + 1) * sizeof(char)); //구조체에 번호의 크기만큼 동적할당
+				strcpy(tmp.call, p[j].call); //tmp.call에 p[j].call복사
+				len = strlen(p[j + 1].call); //len에 p[j + 1].call길이 저장
+				p[j].call = (char*)malloc((len + 1) * sizeof(char)); //구조체에 번호의 크기만큼 동적할당
+				strcpy(p[j].call, p[j + 1].call); //p[j].call에 p[j + 1].call복사
+				len = strlen(tmp.call); //len에 tmp.call길이 저장
+				p[j + 1].call = (char*)malloc((len + 1) * sizeof(char)); //구조체에 번호의 크기만큼 동적할당
+				strcpy(p[j + 1].call, tmp.call); //p[j + 1].call에 tmp.call복사
+				len = strlen(p[j].birth); //len에 p[j].birth길이 저장
+				tmp.birth = (char*)malloc((len + 1) * sizeof(char)); //구조체에 생일의 크기만큼 동적할당
+				strcpy(tmp.birth, p[j].birth); //tmp.birth에 p[j].birth복사
+				len = strlen(p[j + 1].birth); //len에 p[j + 1].birth길이 저장
+				p[j].birth = (char*)malloc((len + 1) * sizeof(char)); //구조체에 생일의 크기만큼 동적할당
+				strcpy(p[j].birth, p[j + 1].birth); //p[j].birth에 p[j + 1].birth복사
+				len = strlen(tmp.birth); //len에 tmp.birth길이 저장
+				p[j + 1].birth = (char*)malloc((len + 1) * sizeof(char)); //구조체에 생일의 크기만큼 동적할당
+				strcpy(p[j + 1].birth, tmp.birth); //p[j + 1].birth에 tmp.birth복사
+			}
+		}
+	}
+	printf("<<%d>>\n", *n); //현재 몇명이 저장되어 있는지 출력
+}
+
+void ShowAll(struct student *p, int n) { //2를 눌렀을 때
+	for (int i = 0; i < n; i++) {
+		printf("%s %s %s\n", p[i].name, p[i].call, p[i].birth); //p[i].name, p[i].call, p[i].birth출력
+	}
+}
+
+void Delete(struct student *p, int *n) { //3을 눌렀을 때
+	char ch[21] = ""; //변수 선언
+	int i, j = 0, flag = -1; //변수 선언
+	printf("Name:"); //Name:출력
+	scanf("%s", ch); //이름 입력
+	for (i = 0; i < *n; i++) {
+		if (strcmp(p[i].name, ch) == 0) { //p[i].name와 ch가 같으면
+			flag = i; //flag에 i저장
+			break; //반복문 탈출
+		}
+	}
+	if (flag != -1) { //flag가 -1이 아니면
+		for (i = 0; i < *n; i++) { 
+			if (i == flag) { //i가 flag이면
+				free(p[i].name); //p[i].name 메모리 해제
+				free(p[i].call); //p[i].call 메모리 해제
+				free(p[i].birth); //p[i].birth 메모리 해제
+				for (j = i + 1; j < *n; j++) {
+					p[j - 1] = p[j]; //p[j-1]에 p[j]저장
+				}
+				break; //반복문 탈출
+			}
+		}
+		(*n)--; //인원수 감소
+	}
+}
+
+void FindByBirth(struct student *p, int n) { //4를 눌렀을 때
+	int a, b, len; //변수 선언
+	char ch[3] = ""; //문자열 선언
+	printf("Birth:"); //Birth:출력
+	scanf("%d", &b); //b입력
+	for (int i = 0; i < n; i++) {
+		len = strlen(p[i].birth); //len에 p[i].birth길이 저장
+		ch[0] = p[i].birth[len - 4]; //ch[0]에 p[i].birth[len - 4]저장
+		ch[1] = p[i].birth[len - 3]; //ch[1]에 p[i].birth[len - 3]저장
+		a = atoi(ch); //atoi를 이용해 ch를 정수로 변환하여 a에 저장
+		if (b == a) { //b와a가 같으면
+			printf("%s %s %s\n", p[i].name, p[i].call, p[i].birth); //p[i].name, p[i].call, p[i].birth출력
+		}
+	}
+}
+
+void Exit(struct student *p, int n) { //5를 눌렀을 때
+	for (int i = 0; i < n; i++) {
+		free(p[i].name); //p[i].name 메모리 해제
+		free(p[i].call); //p[i].call 메모리 해제
+		free(p[i].birth); //p[i].birth 메모리 해제
+	}
+	free(p); //메모리 해제
+}
