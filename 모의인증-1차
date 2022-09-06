@@ -1,0 +1,221 @@
+1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+void input(int *p, int M);
+int *sel_max(int *p, int M);
+void output(int *p, int N);
+int main() {
+	int in[100], out[100], *max, i, N, M;
+	scanf("%d %d", &N, &M);
+	for (i = 0; i < N; i++) {
+		input(in, M);
+		max = sel_max(in, M);
+		out[i] = *max;
+	}
+	output(out, N);
+
+	return 0;
+}
+void input(int *p, int M) {
+	for (int *q = p; q < p + M; q++) {
+		scanf("%d", q);
+	}
+}
+int *sel_max(int *p, int M) {
+	int cnt = 0, mcnt = 0;
+	int *pm = NULL;
+	for (int *q = p; q < p + M; q++) {
+		for (int *r = q; r < p + M; r++) {
+			if (*q == *r)
+				cnt++;
+		}
+		if (mcnt < cnt) {
+			pm = q;
+			mcnt = cnt;
+		}
+		cnt = 0;
+	}
+	return pm;
+}
+void output(int *p, int N) {
+	for (int *q = p; q < p + N; q++) {
+		printf(" %d", *q);
+	}
+}
+
+2-1.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char arr[101] = "", *pch[100] = { NULL };
+	char *p = arr, *q = arr;
+	int N = 0, size = 0;
+	gets(arr);
+	scanf("%d", &N);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			pch[size] = q;
+			size++;
+			q += strlen(q) + 1;
+		}
+		p++;
+	}
+	pch[size] = q;
+	size++;
+	printf("%s", pch[N - 1]);
+
+	return 0;
+}
+
+2-2.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int main() {
+	char arr[101] = "", *pch[100] = { NULL };
+	char *p = arr, *q = arr, *first = arr;
+	int N = 0, size = 0, i;
+	gets(arr);
+	scanf("%d", &N);
+	while (*p) {
+		if (*p == ' ') {
+			*p = '\0';
+			pch[size] = q;
+			size++;
+			q += strlen(q) + 1;
+		}
+		p++;
+	}
+	pch[size] = q;
+	size++;
+	for (i = 0; i < size; i++) {
+		if (strcmp(first, pch[i]) > 0)
+			first = pch[i];
+	}
+	printf("%s\n%s", pch[N - 1], first);
+
+	return 0;
+}
+
+3.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+void StringAdd(char arr[], char ch, int index);
+int Convertor(char x);
+int main() {
+	char str[16] = "";
+	char smb1 = '+', smb2 = '*';
+	int len = 0, cvt1 = 0, cvt2 = 0, i, j;
+	scanf("%s", str);
+	len = strlen(str);	
+	for (i = 0, j = 0; i < len - 1 + j; i++) {
+		cvt1 = Convertor(str[i]);
+		cvt2 = Convertor(str[i + 1]);
+		if (cvt1 % 2 == 1 && cvt2 % 2 == 1) {
+			StringAdd(str, smb1, i);
+			i++;
+			j++;
+		}
+		else if (cvt1 % 2 == 0 && cvt2 % 2 == 0) {
+			StringAdd(str, smb2, i);
+			i++;
+			j++;
+		}
+	}
+	printf("%s", str);
+
+	return 0;
+}
+void StringAdd(char arr[], char ch, int index) {
+	int i = 0, len = strlen(arr);		
+	for (i = len; i > index; i--) {
+		arr[i + 1] = arr[i];
+	}
+	arr[i + 1] = ch;
+}
+int Convertor(char x) {
+	return x - '0';
+}
+
+4.
+#pragma warning (disable:4996) 
+#include <stdio.h>
+#include <string.h>
+struct st {
+	char name[10];
+	char book[5][20];
+	int score[5]; 
+	int cnt, pcnt;
+};
+int main() {
+	struct st x[101];
+	int n, i, j;
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) {
+		scanf("%s", x[i].name);
+		x[i].pcnt = 0;
+		for (j = 0; j < 20; j++) {
+			scanf("%s", x[i].book[j]);
+			if (strcmp(x[i].book[j], "0") == 0) {
+				break;
+			}
+			scanf("%d", &x[i].score[j]);
+			if (x[i].score[j] >= 50) {
+				x[i].pcnt++;
+			}
+		}
+	}
+	for (i = 0; i < n; i++) {
+		printf("%s %d%%\n", x[i].name, 20 * x[i].pcnt);
+	}
+
+	return 0;
+}
+
+5.
+#pragma warning (disable:4996)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+struct st {
+	char major[51];
+	int stNum;
+};
+int main() {
+	struct st Student[100] = { '\0' }, tmp = { '\0',0 };
+	int N = 0, i, j;
+	scanf("%d", &N);
+	getchar();
+	for (i = 0; i < N; i++) {
+		gets_s(Student[i].major, 51);
+		scanf("%d", &Student[i].stNum);
+		getchar();
+		for (j = 0; j < i; j++) {
+			if (strcmp(Student[i].major, Student[j].major) < 0) {
+				tmp = Student[i];
+				Student[i] = Student[j];
+				Student[j] = tmp;
+			}
+			if (strcmp(Student[i].major, Student[j].major) == 0) {
+				if (Student[i].stNum < Student[j].stNum) {
+					tmp = Student[i];
+					Student[i] = Student[j];
+					Student[j] = tmp;
+				}
+			}
+		}
+	}
+	for (i = 0; i < N; i++) {
+		printf("%s %d\n", Student[i].major, Student[i].stNum);
+	}
+	
+	return 0;
+}
