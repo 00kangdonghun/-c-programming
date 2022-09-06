@@ -1,0 +1,47 @@
+1.
+#pragma warning (disable:4996) 
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <string.h> 
+#define ABS(a)((a)>0?(a):(a)*-1)
+#define MAX(a,b)((a)>(b)?(a):(b))
+int main() {
+	int a, b, c, d, e, f;
+	int A, B, C, D, E, F;
+	int n;
+	int max = 0, max1 = 0, max2 = 0, max3 = 0, max4 = 0;
+	scanf("%d%d%d%d%d%d", &a, &b, &c, &d, &e, &f);
+	A = ABS(a);
+	B = ABS(b);
+	C = ABS(c);
+	D = ABS(d);
+	E = ABS(e);
+	F = ABS(f);
+	max = MAX(A, B);
+	max1 = MAX(max, C);
+	max2 = MAX(max1, D);
+	max3 = MAX(max2, E);
+	max4 = MAX(max3, F);
+	if (max4 == A) {
+		n = a;
+	}
+	else if (max4 == B) {
+		n = b;
+	}
+	else if (max4 == C) {
+		n = c;
+	}
+	else if (max4 == D) {
+		n = d;
+	}
+	else if (max4 == E) {
+		n = e;
+	}
+	else if (max4 == F) {
+		n = f;
+	}
+	printf("%d %d", n, max4);
+
+	return 0;
+}
+
